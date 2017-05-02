@@ -10,7 +10,7 @@ typedef struct  Student
     string no;  //学号
     string name;//姓名
     string cla;   //班级
-	string sex;		//性别  0男1 女
+	string sex;		//性别 
 	string phone; //手机号码
 	string sele;	//	选修课程
 }Student; 
@@ -30,41 +30,42 @@ typedef struct  sub
 	 int len;
  }subject; 
 
- /*将文件中的信息写到链表中*/
-stu readFile(stu S){
-	ifstream stu("stu.txt");
-	stu.seekg(ios::beg);
-	string s;
-	getline(stu,s);
-	while ( getline(stu,s) ){
-		S.len++;
-		int n,l=0;
-		n=s.find("------");
-		int flag=1;
-		while(l<=s.size()){	
-			string sh=s.substr(l,n);
-			if(flag==1) S.data[S.len].no=sh;
-			else if(flag==2) S.data[S.len].name=sh;
-			else if(flag==3) S.data[S.len].cla=sh;
-			else if(flag==4) S.data[S.len].sex=sh;
-			else if(flag==5) S.data[S.len].phone=sh;
-			else if(flag==6) S.data[S.len].sele=sh;
-			n=s.find("------",n);
-			l+=n;
-			l+=6;
-			flag++;
+	stu readFile(stu S){
+		ifstream stu("stu.txt");
+		stu.seekg(ios::beg);
+		char s[100];
+		stu.getline(s,100,'\n');
+		while ( stu.getline(s,100,'\n') ){
+			S.len++;
+			char seg[] = "------"; /*分隔符这里为逗号comma，分隔符可以为你指定的，如分号，空格等*/  
+			char charlist[50][50]={""};/*指定分隔后子字符串存储的位置，这里定义二维字符串数组*/  
+			int i =0;  
+			char *substr= strtok(s, seg);/*利用现成的分割函数,substr为分割出来的子字符串*/  
+			while (substr != NULL) {    
+					strcpy(charlist[i],substr);/*把新分割出来的子字符串substr拷贝到要存储的charlsit中*/  
+					i++;  
+					//	cout<<substr<<endl;
+				   substr = strtok(NULL,seg);  
+			}   
+			S.data[S.len].no=charlist[0];
+			 S.data[S.len].name=charlist[1];
+			S.data[S.len].cla=charlist[2];
+			 S.data[S.len].sex=charlist[3];
+			 S.data[S.len].phone=charlist[4];
+			S.data[S.len].sele=charlist[5];
+			//	cout<<charlist[5]<<endl;
 		}
+		return S;
 	}
-	return S;
-}
-/*将链表写入文件中*/
-void writeFile(stu S){
-	 ofstream stud("stu.txt");
-	 int a;
-	 stud<<"学号------姓名------班级------性别------手机号码------选修课"<<endl; 
-	 for(a=1;a<=S.len;a++)  {
-		 stud<<S.data[a].no<<"------"<<S.data[a].name<<"------"<<S.data[a].cla<<"------"<<S.data[a].sex<<"------"<<S.data[a].phone<<"------"<<S.data[a].sele<<endl;
-	 }
+
+	/*将链表写入文件中*/
+	void writeFile(stu S){
+		 ofstream stud("stu.txt");
+		 int a;
+		 stud<<"学号------姓名------班级------性别------手机号码------选修课"<<endl; 
+		 for(a=1;a<=S.len;a++)  {
+			 stud<<S.data[a].no<<"------"<<S.data[a].name<<"------"<<S.data[a].cla<<"------"<<S.data[a].sex<<"------"<<S.data[a].phone<<"------"<<S.data[a].sele<<endl;
+		 }
 }
  /*学生信息管理目录*/
  void stu_menu(){
@@ -106,7 +107,7 @@ stu insert(stu S){
 	cin>>S.data[n].name;
 	cout<<"请输入学生班级(如：15级软件1班):";  
 	cin>>S.data[n].cla;
-	cout<<"请输入学生性别(0:男生;1:女生):";  
+	cout<<"请输入学生性别(填写：男/女):";  
 	cin>>S.data[n].sex;
 	cout<<"请输入学生手机号码:";  
 	cin>>S.data[n].phone;
@@ -397,23 +398,23 @@ stu Sort_phone(stu S){
 subject readFile(subject L){
 	ifstream cla("class.txt");
 	cla.seekg(ios::beg);
-	string s;
-	getline(cla,s);
-	while ( getline(cla,s) ){
+	char s[100];
+	cla.getline(s,100,'\n');
+	while ( cla.getline(s,100,'\n') ){
 		L.len++;
-		int n,l=0;
-		n=s.find("------");
-		int flag=1;
-		while(l<=s.size()){	
-			string sh=s.substr(l,n);
-			if(flag==1) L.data[L.len].num=sh;
-			else if(flag==2) L.data[L.len].book=sh;
-			else if(flag==3) L.data[L.len].start=sh;
-			n=s.find("------",n);
-			l+=n;
-			l+=6;
-			flag++;
-		}
+		char seg[] = "------"; /*分隔符这里为逗号comma，分隔符可以为你指定的，如分号，空格等*/  
+        char charlist[4][50]={""};/*指定分隔后子字符串存储的位置，这里定义二维字符串数组*/  
+        int i =0;  
+        char *substr= strtok(s, seg);/*利用现成的分割函数,substr为分割出来的子字符串*/  
+        while (substr != NULL) {    
+                strcpy(charlist[i],substr);/*把新分割出来的子字符串substr拷贝到要存储的charlsit中*/  
+                i++;  
+				//	cout<<substr<<endl;
+               substr = strtok(NULL,seg);  
+        }   
+		L.data[L.len].num=charlist[0];
+		 L.data[L.len].book=charlist[1];
+		L.data[L.len].start=charlist[2];
 	}
 	return L;
 }
