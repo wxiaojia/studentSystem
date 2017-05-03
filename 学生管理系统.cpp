@@ -487,8 +487,7 @@ void delecla_menu(){
 	cout<<"根据***删除课程信息管理"<<endl;
 	cout<<"1.课程编号"<<endl;
     cout<<"2.课程名"<<endl;
-	cout<<"3.开课学期"<<endl;
-	cout<<"4.退出"<<endl;
+	cout<<"3.退出"<<endl;
  }
 /*6.6.0删除后后部分前*/
 subject dele(subject L,int s){
@@ -525,16 +524,6 @@ subject deleByName(subject L,string book){
 	}
 	return L;
 }
-/*6.2.3按学期删除*/
-subject deleByStart(subject L,string start){
-	int i;
-	for(i=1;i<=L.len;i++){
-		if(L.data[i].start==start){
-			L=dele(L,i);
-		}
-	}
-	return L;
-}
 /*6.3.0改*/
 void updatecla_menu(){
 	cout<<"修改课程***信息管理"<<endl;
@@ -548,11 +537,15 @@ subject updateName(subject L){
 	string book;
 	cout<<"请输入要修改的编号:";
 	cin>>num;
-	cout<<"请输入要修改的课程:";
-	cin>>book;			
-	int b=searchByBook(L,book);
-	if(b==0) {L.data[b].book=book;cout<<"修改成功"<<endl;}
-	else cout<<"该课程号已经存在，编号为"<<L.data[b].num<<endl;
+	int n=searchBynum(L,num);
+	if(n==0) {cout<<"不存在该课程编号。"<<endl;}
+	else{
+		cout<<"请输入要修改的课程:";
+		cin>>book;
+		int b=searchByBook(L,book);
+		if(b==0) {L.data[n].book=book;cout<<"修改成功"<<endl;}
+		else cout<<"该课程已经存在，编号为"<<L.data[n].num<<endl;
+	}
 	return L;
 }
 /*6.3.2 修改开课学期*/
@@ -824,8 +817,7 @@ void main(){
 									//1：编号，2：名 3.开学期
 									if(y==1) {cout<<"请输入要删除课程的编号:";cin>>num;L=deleByNum(L,num);}
 									else if(y==2) {cout<<"请输入要删除的课程名:";cin>>book;L=deleByName(L,book);}
-									else if(y==3) {cout<<"请输入要删除的学期课程：";cin>>start;L=deleByStart(L,start);}
-									else if(y==4) break;	
+									else if(y==3) break;	
 									cout<<endl;
 									cout<<"是否继续删除（y:继续,任意键返回上一级):";
 									cin>>con1;
